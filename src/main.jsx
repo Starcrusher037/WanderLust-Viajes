@@ -7,27 +7,37 @@ import './index.css';
 
 /**
  * Inicia el Mock Service Worker antes del renderizado de React.
- * Esto asegura que la primera petición (REST o GraphQL) sea debidamente interceptada.
- * Se restringe a desarrollo o cuando VITE_ENABLE_MSW esté activo.
+ * Esto asegura que la primera peticion (REST o GraphQL) sea debidamente interceptada.
+ * Se inicializa en desarrollo y en despliegues estaticos como GitHub Pages
+ * (a menos que explicitamente se desactive con VITE_ENABLE_MSW='false').
  */
 async function prepareApp() {
-  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_MSW === 'true') {
+  if (import.meta.env.DEV || import.meta.env.VITE_ENABLE_MSW !== 'false') {
     const { worker } = await import('./mocks/browser');
+    const baseUrl = import.meta.env.BASE_URL;
+    const swUrl = baseUrl && baseUrl !== './'
+      ? `${baseUrl.replace(/\/$/, '')}/mockServiceWorker.js`
+      : './mockServiceWorker.js';
+
     return worker.start({
       onUnhandledRequest: 'bypass',
       serviceWorker: {
-        url: '/mockServiceWorker.js'
+        url: swUrl
       }
     });
   }
   return Promise.resolve();
 }
 
+const routerBasename = import.meta.env.BASE_URL && import.meta.env.BASE_URL !== './'
+  ? import.meta.env.BASE_URL
+  : undefined;
+
 prepareApp()
   .then(() => {
     createRoot(document.getElementById('root')).render(
       <StrictMode>
-        <BrowserRouter>
+        <BrowserRouter basename={routerBasename}>
           <DestinationsProvider>
             <App />
           </DestinationsProvider>

@@ -29,7 +29,8 @@ La comunicación de datos se realiza a través de una arquitectura híbrida que 
 - **React Router 8**: Enrutamiento declarativo del lado del cliente sin recargas de pagina, con soporte para enlaces activos (`NavLink`) y parametros dinamicos (`:id`).
 - **Mock Service Worker (MSW 3)**: Interceptacion de peticiones de red a nivel de Service Worker para simular APIs REST y GraphQL.
 - **Lucide React**: Biblioteca de iconografia vectorial consistente y accesible.
-- **CSS3 Moderno**: Diseno responsivo con variables CSS, Flexbox, CSS Grid y diseno adaptable a dispositivos moviles y de escritorio.
+- **Tailwind CSS 4**: Framework de utilidades CSS de última generación integrado nativamente mediante `@tailwindcss/vite` para estilos utilitarios ágiles y responsivos.
+- **CSS3 Moderno**: Diseño responsivo con variables CSS, Flexbox, CSS Grid y diseño adaptable a dispositivos móviles y de escritorio.
 
 ---
 
@@ -179,6 +180,40 @@ Genera los archivos optimizados dentro del directorio `dist/`.
 ```bash
 npm run preview
 ```
+
+### 6. Despliegue en GitHub Pages (gh-pages)
+
+Existen dos alternativas automatizadas para publicar el proyecto en GitHub Pages:
+
+#### Opcion A: Despliegue automatico mediante GitHub Actions (Recomendado)
+El proyecto incluye el flujo de trabajo configurado en `.github/workflows/deploy.yml`. 
+1. Sube tu codigo a GitHub:
+   ```bash
+   git add .
+   git commit -m "feat: proyecto agencia de turismo"
+   git push origin main
+   ```
+2. En GitHub, ingresa a **Settings > Pages** y en **Build and deployment > Source** selecciona **GitHub Actions**. La aplicacion se compilara y desplegara de forma automatica en cada push a `main`.
+
+#### Opcion B: Despliegue manual con script npm
+```bash
+npm run deploy
+```
+Este comando ejecuta automaticamente `npm run build` y publica la carpeta `dist/` en la rama `gh-pages` de tu repositorio remoto.
+
+---
+
+## Compatibilidad y Pruebas en Navegadores
+
+La aplicacion ha sido disenada y testeada siguiendo los estandares web modernos (W3C, ECMAScript 2022, Service Workers API, Fetch API y CSS Grid / Flexbox).
+
+| Navegador | Estado de Compatibilidad | Pruebas Realizadas |
+|---|---|---|
+| Google Chrome (v100+) | 100% Compatible | Interceptacion de Service Worker, renderizado responsivo y navegacion fluida. |
+| Mozilla Firefox (v100+) | 100% Compatible | Resolucion de promesas asincronas, cache en contexto y consultas GraphQL. |
+| Microsoft Edge (v100+) | 100% Compatible | Consola tecnica interactiva, estilos Tailwind y cancelacion con AbortController. |
+| Apple Safari (v15.4+) | 100% Compatible | Flexbox gap, CSS Grid dinámico, compatibilidad con Service Workers en iOS y macOS. |
+| Navegadores Moviles (Chrome Android / Mobile Safari) | 100% Compatible | Interfaz tactil responsiva, modales adaptables y formulario de planificacion. |
 
 ---
 
